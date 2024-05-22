@@ -4,7 +4,7 @@
 \alias{keysInput}
 \title{Create a keys input control}
 \usage{
-keysInput(inputId, keys, global = FALSE)
+keysInput(inputId, keys, global = FALSE, nullOnKeyRelease = FALSE)
 }
 \arguments{
 \item{inputId}{The input slot that will be used to access the value.}
@@ -12,8 +12,11 @@ keysInput(inputId, keys, global = FALSE)
 \item{keys}{A character vector of keys to bind. Examples include, \code{command},
 \code{command+shift+a}, \verb{up down left right}, and more.}
 
-\item{global}{Should keys work anywhere? If TRUE, keys are triggered when
+\item{global}{Should keys work anywhere? If \link{TRUE}, keys are triggered when
 inside a textInput.}
+
+\item{nullOnKeyRelease}{If \link{TRUE}, input will be set to \link{NULL} after keys were
+released.}
 }
 \description{
 Create a key input that can be used to observe keys pressed by

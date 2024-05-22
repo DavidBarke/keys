@@ -4,15 +4,37 @@ minify <- function(x) {
 
 #' @importFrom htmltools tags
 #' @importFrom jsonlite toJSON
-keys_js <- function(id, keys, global = FALSE) {
-  if (global) global <- "Global"
-  else global <- ""
-
-  x <- sprintf("$(document).on('shiny:sessioninitialized', function() {
-    Mousetrap.bind%s(%s, function(e, combo) {
-      Shiny.setInputValue('%s', combo, {priority: 'event'});
-    });
-  });", global, toJSON(keys), id)
+keys_js <- function(id, keys, global = FALSE, nullOnKeyRelease = FALSE) {
+  x <- if (!nullOnKeyRelease) {
+    glue::glue(
+      "$(document).on('shiny:sessioninitialized', function() {",
+      "  Mousetrap.{{bindFunc}}({{keys}}, function(e, combo) {",
+      "    Shiny.setInputValue('{{id}}', combo, {priority: 'event'});",
+      "  });",
+      "});",
+      bindFunc = if (global) "bindGlobal" else "bind",
+      keys = jsonlite::toJSON(keys),
+      id = id,
+      .open = "{{",
+      .close = "}}"
+    )
+  } else {
+    glue::glue(
+      "$(document).on('shiny:sessioninitialized', function() {",
+      "  Mousetrap.{{bindFunc}}({{keys}}, function(e, combo) {",
+      "    Shiny.setInputValue('{{id}}', combo, {priority: 'event'});",
+      "  }, 'keydown');",
+      "  Mousetrap.{{bindFunc}}({{keys}}, function(e, combo) {",
+      "    Shiny.setInputValue('{{id}}', null, {priority: 'event'});",
+      "  }, 'keyup');",
+      "});",
+      bindFunc = if (global) "bindGlobal" else "bind",
+      keys = jsonlite::toJSON(keys),
+      id = id,
+      .open = "{{",
+      .close = "}}"
+    )
+  }
 
   tags$head(
     tags$script(

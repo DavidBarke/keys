@@ -5,7 +5,12 @@
 \alias{removeKeys}
 \title{Add a key binding from the server side}
 \usage{
-addKeys(inputId, keys, session = shiny::getDefaultReactiveDomain())
+addKeys(
+  inputId,
+  keys,
+  nullOnKeyRelease = FALSE,
+  session = shiny::getDefaultReactiveDomain()
+)
 
 removeKeys(keys, session = shiny::getDefaultReactiveDomain())
 }
@@ -14,6 +19,9 @@ removeKeys(keys, session = shiny::getDefaultReactiveDomain())
 
 \item{keys}{A character vector of keys to bind. Examples include, \code{command},
 \code{command+shift+a}, \verb{up down left right}, and more.}
+
+\item{nullOnKeyRelease}{If \link{TRUE}, input will be set to \link{NULL} after keys were
+released.}
 
 \item{session}{The \code{session} object passed to function given to
 \code{shinyServer}. Default is \code{getDefaultReactiveDomain()}.}

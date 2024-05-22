@@ -6,8 +6,10 @@
 #' @param inputId The input slot that will be used to access the value.
 #' @param keys A character vector of keys to bind. Examples include, `command`,
 #' `command+shift+a`, `up down left right`, and more.
-#' @param global Should keys work anywhere? If TRUE, keys are triggered when
+#' @param global Should keys work anywhere? If [TRUE], keys are triggered when
 #' inside a textInput.
+#' @param nullOnKeyRelease If [TRUE], input will be set to [NULL] after keys were
+#' released.
 #'
 #' @examples
 #' \dontrun{
@@ -31,8 +33,8 @@
 #' }
 #'
 #' @export
-keysInput <- function(inputId, keys, global = FALSE) {
+keysInput <- function(inputId, keys, global = FALSE, nullOnKeyRelease = FALSE) {
   htmltools::tagList(
-    keys_js(inputId, keys, global)
+    keys_js(inputId, keys, global, nullOnKeyRelease)
   )
 }

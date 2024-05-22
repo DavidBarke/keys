@@ -7,6 +7,7 @@
 addKeys <- function(
   inputId,
   keys,
+  nullOnKeyRelease = FALSE,
   session = shiny::getDefaultReactiveDomain()
 ){
   if (is.null(session)) alert_null_session()
@@ -17,7 +18,8 @@ addKeys <- function(
         "add_mousetrap_binding",
         list(
           id = inputId,
-          keys = x
+          keys = x,
+          nullOnKeyRelease = nullOnKeyRelease
         )
       )
     }
